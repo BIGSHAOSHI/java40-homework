@@ -1,0 +1,177 @@
+## 代码
+
+```java
+package com.cskaoyan.javase.practice.stage2;
+
+import java.util.Arrays;
+import java.util.Scanner;
+
+/**
+ * since 2022/3/25 20:51
+ * authored by BIGSHAOSHI
+ ***/
+
+public class StudentManage {
+
+    private static void showMethod() {
+        System.out.println("------------王道Java学生管理系统------------");
+        System.out.println("             1.学 生 列 表");
+        System.out.println("             2.增 加 学 生");
+        System.out.println("             3.删 除 学 生");
+        System.out.println("             4.修 改 学 生");
+        System.out.println("             5.查 询 学 生");
+        System.out.println("             6.退 出 系 统");
+        System.out.println("请选择功能(1~6):");
+    }
+
+    public static void showStudentList(String[] studentList) {
+        System.out.println("学生列表为："+Arrays.toString(studentList));
+    }
+
+    public static String[] addStudent(String[] studentList) {
+        Scanner scanner = new Scanner(System.in);
+        String[] newStudentList = new String[studentList.length+1];
+        while (true){
+            System.out.print("请输入您要添加的名字：");
+            String addStudentName = scanner.nextLine();
+            int addIndex = searchStudent(studentList,addStudentName);
+            if(addIndex == -1){
+                System.arraycopy(studentList, 0, newStudentList, 0, studentList.length);
+                newStudentList[newStudentList.length - 1] = addStudentName;
+                return newStudentList;
+            }
+            System.out.print(addStudentName+"已存在， ");
+        }
+    }
+
+    public static String[] deleteStudent(String[] studentList) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("请输入您要删除的名字：");
+        String deleteStudentName = scanner.nextLine();
+        int deleteIndex = searchStudent(studentList,deleteStudentName);
+        if ( deleteIndex != -1){
+            for (int i = deleteIndex; i < studentList.length-1; i++) {
+                studentList[i] = studentList[i+1];
+            }
+            String[] newStudentList = new String[studentList.length-1];
+            System.arraycopy(studentList, 0, newStudentList, 0, newStudentList.length);
+            return newStudentList;
+        }else
+            return studentList;
+    }
+
+    public static void alterStudent(String[] studentList) {
+        Scanner scanner = new Scanner(System.in);
+        while(true){
+            System.out.print("请输入您要修改的名字：");
+            String alterStudentName = scanner.nextLine();
+            int alterIndex = searchStudent(studentList,alterStudentName);
+            if (alterIndex == -1){
+                System.out.println("学生列表没有您所输入的名字");
+            }else{
+                while (true){
+                    System.out.print("请输入您要修改成的名字：");
+                    String newStudentName = scanner.nextLine();
+                    int newIndex = searchStudent(studentList,newStudentName);
+                    if (newIndex == -1){
+                        studentList[alterIndex] = newStudentName;
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+
+    }
+
+    public static void searchStudent(String[] studentList) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("请输入您要查询的名字：");
+        String searchName = scanner.nextLine();
+        for (int i = 0;i < studentList.length;i++) {
+            if (studentList[i].equals(searchName)){
+                System.out.println("下标为："+i);;
+                return;
+            }
+        }
+        System.out.println(searchName+"不在学生列表中！");;
+    }
+
+    public static int searchStudent(String[] studentList,String searchName) {
+        for (int i = 0;i < studentList.length;i++) {
+            if (studentList[i].equals(searchName)){
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private static boolean exitSystem(Scanner scanner) {
+        System.out.println("确认退出吗(1/2):");
+        int function2 = scanner.nextInt();
+        if (function2 == 1) {
+            System.out.println("正在退出中！");
+            return true;
+        }
+        return false;
+    }
+
+
+    public static void main(String[] args) {
+        String[] studentList = { "屈正","王世杰","辛冉冉","刘露"};
+        Scanner scanner = new Scanner(System.in);
+        boolean flag = true;
+        while (flag) {
+            showMethod();
+            int functionNumber = scanner.nextInt();
+            switch (functionNumber) {
+                case 1:
+                    showStudentList(studentList);
+                    break;
+                case 2:
+                    studentList = addStudent(studentList);
+                    break;
+                case 3:
+                    studentList = deleteStudent(studentList);
+                    break;
+                case 4:
+                    alterStudent(studentList);
+                    break;
+                case 5:
+                    searchStudent(studentList);
+                    break;
+                case 6:
+                    if (exitSystem(scanner))
+                        flag = false;
+                    break;
+            }
+        }
+    }
+}
+```
+
+## 功能展示
+
+### 功能1:学生列表
+
+![3.1](/FileD/code/homework/image/day05/3.1.png)
+
+### 功能2:添加学生
+
+![3.2](/FileD/code/homework/image/day05/3.2.png)
+
+### 功能3:删除学生
+
+![3.3](/FileD/code/homework/image/day05/3.3.png)
+
+### 功能4:修改学生
+
+![3.4](/FileD/code/homework/image/day05/3.4.png)
+
+### 功能5:查询学生
+
+![3.5](/FileD/code/homework/image/day05/3.5.png)
+
+### 功能6:退出系统
+
+![3.6](/FileD/code/homework/image/day05/3.6.png)
